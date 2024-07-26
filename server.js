@@ -7,7 +7,20 @@ const app = express();
 app.use(express.json());
 
 app.get('/usuarios', async (req, res) => {
-  const users = await prisma.user.findMany();
+  let users = [];
+
+  if (req.query) {
+    users = await prisma.user.findMany({
+      where: {
+        name: req.query.name,
+        email: req.query.email,
+        age: req.query.age,
+      },
+    });
+  } else {
+    users = await prisma.user.findMany();
+  }
+
   res.status(200).json(users);
 });
 
