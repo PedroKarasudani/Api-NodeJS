@@ -4,11 +4,23 @@ import api from '../services/api';
 import React from 'react';
 
 function App() {
-  let users = [];
-  console.log(users);
+  const [users, setUsers] = React.useState([]);
+
+  const inputName = React.useRef();
+  const inputAge = React.useRef();
+  const inputEmail = React.useRef();
 
   async function getUsers() {
-    users = await api.get('/usuarios');
+    const getUserApi = await api.get('/usuarios');
+    setUsers(getUserApi.data);
+  }
+
+  async function createUsers() {
+    await api.post('/usuarios', {
+      name: inputName.current.value,
+      age: inputAge.current.value,
+      email: inputEmail.current.value,
+    });
   }
 
   React.useEffect(() => {
@@ -19,10 +31,12 @@ function App() {
     <div className="container">
       <form className="cadastro">
         <h1>Cadastro de usuario</h1>
-        <input placeholder="Nome" name="nome" type="text" />
-        <input placeholder="Idade" name="idade" type="text" />
-        <input placeholder="Email" name="email" type="email" />
-        <button>Cadastrar</button>
+        <input placeholder="Nome" name="nome" type="text" ref={inputName} />
+        <input placeholder="Idade" name="idade" type="text" ref={inputAge} />
+        <input placeholder="Email" name="email" type="email" ref={inputEmail} />
+        <button type="button" onClick={createUsers}>
+          Cadastrar
+        </button>
       </form>
       {users.map((user) => {
         return (
