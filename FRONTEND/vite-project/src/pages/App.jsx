@@ -1,11 +1,19 @@
 import './App.css';
 import lixeira from '../assets/lixo.svg';
+import api from '../services/api';
+import React from 'react';
 
 function App() {
-  const users = [
-    { id: 1, name: 'pedro', age: '27', email: 'pedro@hotmail.com' },
-    { id: 2, name: 'babis', age: '26', email: 'babis@hotmail.com' },
-  ];
+  let users = [];
+  console.log(users);
+
+  async function getUsers() {
+    users = await api.get('/usuarios');
+  }
+
+  React.useEffect(() => {
+    getUsers();
+  }, []);
 
   return (
     <div className="container">
