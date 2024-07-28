@@ -21,6 +21,14 @@ function App() {
       age: inputAge.current.value,
       email: inputEmail.current.value,
     });
+
+    getUsers();
+  }
+
+  async function deleteUsers(id) {
+    await api.delete(`/usuarios/${id}`);
+
+    getUsers();
   }
 
   React.useEffect(() => {
@@ -52,7 +60,7 @@ function App() {
                 Email: <span>{user.email}</span>
               </p>
             </div>
-            <button>
+            <button onClick={() => deleteUsers(user.id)}>
               <img src={lixeira} />
             </button>
           </div>
